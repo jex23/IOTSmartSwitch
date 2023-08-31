@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Import shared preferences
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geocoding/geocoding.dart';
+
 import 'screens/home_screen.dart';
 import 'screens/data_screen.dart';
 import 'screens/settings_screen.dart';
@@ -44,7 +45,19 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: Stack(
+        children: [
+          Offstage(
+            offstage: _currentIndex != 0, // Hide the screen when not selected
+            child: HomeScreen(),
+          ),
+          Offstage(
+            offstage: _currentIndex != 2, // Hide the screen when not selected
+            child: SettingsScreen(),
+          ),
+          _screens[_currentIndex],
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {

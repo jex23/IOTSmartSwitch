@@ -20,6 +20,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   double _distanceBetweenLocations = 0.0;
   String _distanceMessage = '';
   String _Address = '';
+  bool radiusState = false;
+
+
+  void _updateRadiusState(bool newState) async {
+    DatabaseReference databaseRef = FirebaseDatabase.instance.reference();
+    await databaseRef.child('RadiusState').set(newState);
+  }
 
   void _getCurrentLocation() async {
     try {
@@ -107,9 +114,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             );
             if (_distanceBetweenLocations <= 10.0) {
               _distanceMessage = 'you are inside 10 meter radius';
+              radiusState = true;
             } else {
               _distanceMessage = 'you are outside 10 meter radius';
+              radiusState = false;
             }
+            _updateRadiusState(radiusState); // Update radiusState in Firebase
           }
         }
       },
@@ -199,8 +209,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 20,
               ),
               Text(
-                'Device location',
+                'Device location $radiusState',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+
               ),
               SizedBox(
                 height: 20,
