@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "964279475866",
+    "firebase_url": "https://esp32-led-12ab0-default-rtdb.firebaseio.com",
+    "project_id": "esp32-led-12ab0",
+    "storage_bucket": "esp32-led-12ab0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964279475866:android:567856641f4d5d99e80923",
+        "android_client_info": {
+          "package_name": "com.example.iot_smart_switch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "964279475866-s5gdca7lj001kogififsvrgss4mtnqvh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHtGFvnuYXqf3oqKF1vaBCMQAL-GcrW_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "964279475866-s5gdca7lj001kogififsvrgss4mtnqvh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964279475866:android:1b08bbafbf193201e80923",
+        "android_client_info": {
+          "package_name": "com.example.mapapak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "964279475866-s5gdca7lj001kogififsvrgss4mtnqvh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHtGFvnuYXqf3oqKF1vaBCMQAL-GcrW_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "964279475866-s5gdca7lj001kogififsvrgss4mtnqvh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
