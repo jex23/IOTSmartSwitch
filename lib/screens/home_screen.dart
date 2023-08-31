@@ -199,6 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -270,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Row(children: [
 
-                buildEnergyCard(energyValue, 'kWh', Icons.lightbulb, Colors.blue ,'Energy', 100, Colors.blue),
+                buildEnergyCard(energyValue, 'kWh', Icons.lightbulb, Colors.purple ,'Energy', 100, Colors.purple),
                 buildEnergyCard(frequencyValue, 'Hz', Icons.signal_cellular_alt, Colors.orange ,'Frequency', 200,Colors.orange ),
               ],),
               Row(children: [
