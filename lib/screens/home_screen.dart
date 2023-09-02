@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double powerValue = 0.0;
   bool radState = false;
   bool isAutoTripOff = false;
+
   // Declare the SharedPreferences variable
   late SharedPreferences _prefs;
 
@@ -101,20 +102,21 @@ class _HomeScreenState extends State<HomeScreen> {
         'Relay6': false,
       });
     }
-
   }
-
 
   // Method to initialize SharedPreferences
   Future<void> _initSharedPreferences() async {
     _prefs = await SharedPreferences.getInstance();
-    isAutoTripOff = _prefs.getBool('isAutoTripOff') ?? false; // Initialize isAutoTripOff from shared preferences
+    isAutoTripOff = _prefs.getBool('isAutoTripOff') ??
+        false; // Initialize isAutoTripOff from shared preferences
     setState(() {});
   }
+
   // Method to update isAutoTripOff and store it in SharedPreferences
   Future<void> _updateIsAutoTripOff(bool newValue) async {
     // Update the value in SharedPreferences
     await _prefs.setBool('isAutoTripOff', newValue);
+    _databaseReference.child('AutoTripBolVal').set(newValue);
 
     // Update the UI with the new value
     setState(() {
@@ -145,6 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return CircularPercentIndicator(
       radius: 60.0,
       lineWidth: 10.0,
+      animation: true,
       percent: value,
       center: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -199,8 +202,10 @@ class _HomeScreenState extends State<HomeScreen> {
               LinearPercentIndicator(
                 width: 150.0,
                 lineHeight: 10.0,
+                animation: true,
                 percent: energyValue / maxEnergyValue,
                 // Calculate the actual percentage
+                linearStrokeCap: LinearStrokeCap.roundAll,
                 progressColor: progressColor,
               ),
               SizedBox(height: 10),
@@ -210,11 +215,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-
-
-
-
 
   Widget buildRelayCard(String relayName) {
     return Expanded(
@@ -355,8 +355,8 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               children: [
                 buildEnergyCard(energyValue, 'kWh', Icons.lightbulb,
-                    Colors.purple, 'Energy', 100, Colors.purple),
-                buildEnergyCard(frequencyValue, 'Hz', Icons.signal_cellular_alt,
+                    Colors.purple, 'Energy', 0.001333, Colors.purple),
+                buildEnergyCard(frequencyValue.toInt() - 7.6, 'Hz', Icons.signal_cellular_alt,
                     Colors.orange, 'Frequency', 200, Colors.orange),
               ],
             ),
@@ -368,15 +368,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icons.auto_graph,
                   Colors.amber,
                   'Power Factor',
-                  100,
+                  1.10,
                   Colors.amber,
                 ),
                 buildEnergyCard(powerValue, 'W', Icons.bolt, Colors.red,
-                    'Power', 200, Colors.red),
+                    'Power', 1.0, Colors.red),
               ],
             ),
-
-
             Card(
               elevation: 4,
               shape: RoundedRectangleBorder(
@@ -390,36 +388,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text(
                       'Automatic Trip Off Switch',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Column(
                       children: [
-
                         CupertinoSwitch(
                           value: isAutoTripOff,
                           onChanged: (value) {
                             _updateIsAutoTripOff(value);
-                            setState(() {
-                              isAutoTripOff = value;
-                              if (isAutoTripOff == true) {
-                                if (radState == false) {
-                                 _updateRelayValuesInFirebase({
-                                      'Relay1': false,
-                                      'Relay2': false,
-                                      'Relay3': false,
-                                      'Relay4': false,
-                                      'Relay5': false,
-                                      'Relay6': false,
-                                      });
 
-                                } else {
-
-                                }
-                              } else {
-                                // Code to handle the case when isAutoTripOff is false
-                                // You can leave this section empty or add relevant logic
-                              }
-                            });
                             // End line of CupertinoSwitch onChanged callback
                             // });
                           },
@@ -436,7 +414,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               isAutoTripOff ? 'On' : 'Off',
                               style: TextStyle(fontSize: 14),
                             ),
-
                           ],
                         )
                       ],
@@ -445,7 +422,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Column(
               children: [
                 Row(

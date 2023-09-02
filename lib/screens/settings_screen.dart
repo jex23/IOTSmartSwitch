@@ -27,6 +27,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     DatabaseReference databaseRef = FirebaseDatabase.instance.reference();
     await databaseRef.child('RadiusState').set(newState);
   }
+  void _sendDistanceToFirebase(double distance) async {
+    DatabaseReference databaseRef = FirebaseDatabase.instance.reference();
+    await databaseRef.child('DevDistance').set(distance);
+  }
 
   void _getCurrentLocation() async {
     try {
@@ -91,7 +95,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     final LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
-      distanceFilter: 1,
+      distanceFilter: 50,
     );
 
     _positionStream =
@@ -111,15 +115,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               position.longitude,
               storedLatitude,
               storedLongitude,
+
             );
             if (_distanceBetweenLocations <= 10.0) {
+              print(_distanceBetweenLocations);
               _distanceMessage = 'you are inside 10 meter radius';
               radiusState = true;
             } else {
               _distanceMessage = 'you are outside 10 meter radius';
               radiusState = false;
+              print(_distanceBetweenLocations);
             }
             _updateRadiusState(radiusState); // Update radiusState in Firebase
+            // Send the distance to Firebase
+            _sendDistanceToFirebase(_distanceBetweenLocations);
           }
         }
       },
